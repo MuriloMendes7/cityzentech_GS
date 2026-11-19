@@ -25,7 +25,7 @@ from reportlab.platypus.tableofcontents import TableOfContents
 # DADOS EDITAVEIS
 # ----------------------------------------------------------------------------------------------
 INTEGRANTES = [
-    ("Rick Gabriel Ferreira dos Santos", "RM 565144"),
+    ("Erick Gabriel Ferreira dos Santos", "RM 565144"),
     ("Victor Henry Melchior Camara", "RM 564222"),
     ("Gabriel Akira Borges Kiyohara", "RM 565191"),
     ("Murilo Mendes Marques", "RM 564193"),
