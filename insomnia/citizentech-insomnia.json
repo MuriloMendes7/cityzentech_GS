@@ -1,0 +1,165 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-18T23:15:00.000Z",
+  "__export_source": "insomnia.desktop.app:v10.0.0",
+  "resources": [
+    {
+      "_id": "wrk_api_spring_citizentech",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "API Spring - CitizenTech (NutriMatch)",
+      "description": "Requisições da API RESTful com Spring - NutriMatch / EcoQuiosque",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_api_spring_citizentech_base",
+      "_type": "environment",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080"
+      }
+    },
+    {
+      "_id": "req_cabaz_01_cadastro",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "cadastro",
+      "description": "POST - publica um cabaz pesado no EcoQuiosque (retorna 201 CREATED)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cabazes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"titulo\": \"Cabaz Surpresa de Verduras\",\n\t\"categoria\": \"Hortifruti\",\n\t\"pesoKg\": 4.5,\n\t\"preco\": 5.0,\n\t\"quiosque\": \"EcoQuiosque EQ-001 - Mercado Central\",\n\t\"feirante\": \"Banca da Maria\",\n\t\"gratuitoOng\": false,\n\t\"dataPublicacao\": \"2026-11-18\",\n\t\"urlImagem\": \"https://exemplo.com/cabaz-verduras.png\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "metaSortKey": -1000
+    },
+    {
+      "_id": "req_cabaz_02_cadastro_ong",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "cadastro ONG gratuita",
+      "description": "POST - publica um cabaz gratuito para ONGs verificadas (preco vira 0.0, retorna 201 CREATED)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cabazes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"titulo\": \"Cabaz Solidario de Frutas\",\n\t\"categoria\": \"Frutas\",\n\t\"pesoKg\": 6.0,\n\t\"preco\": 0.0,\n\t\"quiosque\": \"EcoQuiosque EQ-002 - Feira da Vila\",\n\t\"feirante\": \"Barraca do Joao\",\n\t\"gratuitoOng\": true,\n\t\"dataPublicacao\": \"2026-11-18\",\n\t\"urlImagem\": \"\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "metaSortKey": -950
+    },
+    {
+      "_id": "req_cabaz_03_cadastro_invalido",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "cadastro inválido",
+      "description": "POST com dados que quebram o Bean Validation (retorna 400 BAD REQUEST)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cabazes",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"titulo\": \"\",\n\t\"categoria\": \"\",\n\t\"pesoKg\": -1.0,\n\t\"preco\": -5.0,\n\t\"quiosque\": \"\",\n\t\"feirante\": \"\",\n\t\"gratuitoOng\": false,\n\t\"dataPublicacao\": \"2099-01-01\",\n\t\"urlImagem\": \"\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "metaSortKey": -900
+    },
+    {
+      "_id": "req_cabaz_04_consulta",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "consulta",
+      "description": "GET - lista todos os cabazes (retorna 200 OK)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cabazes",
+      "body": {},
+      "headers": [],
+      "metaSortKey": -800
+    },
+    {
+      "_id": "req_cabaz_05_consulta_disponiveis",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "consulta disponíveis",
+      "description": "GET - lista somente os cabazes DISPONIVEIS (retorna 200 OK)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cabazes?status=DISPONIVEL",
+      "body": {},
+      "headers": [],
+      "metaSortKey": -750
+    },
+    {
+      "_id": "req_cabaz_06_consulta_codigo",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "consulta código",
+      "description": "GET - busca um cabaz pelo código (200 OK ou 404 NOT FOUND)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cabazes/1",
+      "body": {},
+      "headers": [],
+      "metaSortKey": -700
+    },
+    {
+      "_id": "req_cabaz_07_atualizar",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "atualizar",
+      "description": "PUT - atualiza um cabaz DISPONIVEL pelo código (200 OK ou 404 NOT FOUND)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cabazes/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"titulo\": \"Cabaz Surpresa de Verduras e Legumes\",\n\t\"categoria\": \"Hortifruti\",\n\t\"pesoKg\": 5.2,\n\t\"preco\": 6.0,\n\t\"quiosque\": \"EcoQuiosque EQ-001 - Mercado Central\",\n\t\"feirante\": \"Banca da Maria\",\n\t\"gratuitoOng\": false,\n\t\"dataPublicacao\": \"2026-11-18\",\n\t\"urlImagem\": \"https://exemplo.com/cabaz-atualizado.png\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "metaSortKey": -600
+    },
+    {
+      "_id": "req_cabaz_08_reservar",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "reservar (gera QR Code)",
+      "description": "PUT - reserva um cabaz DISPONIVEL, muda status para RESERVADO e gera codigoQr (200 OK)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cabazes/1/reservar",
+      "body": {},
+      "headers": [],
+      "metaSortKey": -550
+    },
+    {
+      "_id": "req_cabaz_09_retirar",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "retirar por QR Code",
+      "description": "PUT - confirma a retirada no EcoQuiosque usando o codigoQr da reserva (200 OK)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cabazes/retirar/COLE-O-CODIGO-QR-AQUI",
+      "body": {},
+      "headers": [],
+      "metaSortKey": -520
+    },
+    {
+      "_id": "req_cabaz_10_excluir",
+      "_type": "request",
+      "parentId": "wrk_api_spring_citizentech",
+      "name": "excluir",
+      "description": "DELETE - exclui um cabaz pelo código (204 NO CONTENT)",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cabazes/1",
+      "body": {},
+      "headers": [],
+      "metaSortKey": -500
+    }
+  ]
+}
