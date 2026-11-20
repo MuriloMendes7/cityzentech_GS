@@ -172,65 +172,64 @@ def linha(c, pts, dash=False, seta=False):
 
 def diagrama_classes(c):
     # Linha superior: Controller -> BO -> DAO
-    caixa_classe(c, 0, 580, 160, "CabazController",
+    caixa_classe(c, 0, 625, 160, "CabazController",
                  ["- CabazBO cabazBO"],
                  ["+ cadastrar(CabazDTO)", "+ consultar(String)", "+ consultarPorCodigo(Long)",
                   "+ atualizar(Long, CabazDTO)", "+ reservar(Long)", "+ retirar(String)", "+ excluir(Long)"],
                  estereotipo="<<@RestController>>", cor=colors.HexColor("#FFF0F8"))
-    caixa_classe(c, 180, 580, 165, "CabazBO",
-                 ["- CabazDAO cabazDAO", "+ PRECO_MAXIMO_SIMBOLICO"],
+    caixa_classe(c, 180, 625, 175, "CabazBO",
+                 ["- CabazDAO cabazDAO", "+ STATUS_DISPONIVEL: String", "+ STATUS_RESERVADO: String",
+                  "+ STATUS_RETIRADO: String", "+ PRECO_MAXIMO_SIMBOLICO: double", "- STATUS_VALIDOS: Set<String>"],
                  ["+ consultar(String)", "+ consultarPorCodigo(Long)", "+ cadastrar(CabazDTO)",
-                  "+ atualizar(Long, CabazDTO)", "+ reservar(Long)", "+ retirar(String)", "+ excluir(Long)"],
+                  "+ atualizar(Long, CabazDTO)", "+ reservar(Long)", "+ retirar(String)", "+ excluir(Long)",
+                  "- validarPrecoSimbolico(CabazDTO)"],
                  estereotipo="<<@Service>>", cor=colors.HexColor("#F0F4FF"))
-    caixa_classe(c, 365, 580, 135, "CabazDAO",
+    caixa_classe(c, 375, 625, 125, "CabazDAO",
                  [],
                  ["+ findByCodigo(Long)", "+ findByStatus(String)", "+ findByCodigoQr(String)",
                   "+ (JpaRepository)"],
                  estereotipo="<<interface JpaRepository>>", cor=colors.HexColor("#EEF7F1"))
 
-    # Setas Controller -> BO -> DAO
-    linha(c, [(160, 515), (180, 515)], seta=True)
-    linha(c, [(345, 515), (365, 515)], seta=True)
+    linha(c, [(160, 560), (180, 560)], seta=True)
+    linha(c, [(355, 560), (375, 560)], seta=True)
 
     # Linha do meio: Entidade Cabaz + CabazDTO
-    caixa_classe(c, 0, 410, 240, "Cabaz",
+    caixa_classe(c, 0, 415, 240, "Cabaz",
                  ["- Long codigo", "- String titulo", "- String categoria", "- Double pesoKg", "- Double preco",
                   "- String quiosque", "- String feirante", "- Boolean gratuitoOng", "- String status",
                   "- String codigoQr", "- LocalDate dataPublicacao", "- String urlImagem"],
                  ["+ Cabaz()", "+ Cabaz(CabazDTO)", "+ atualizar(CabazDTO)", "+ getters / setters"],
                  estereotipo="<<@Entity dddj_cabazes>>", cor=colors.HexColor("#FFF8E6"))
 
-    caixa_classe(c, 265, 410, 235, "CabazDTO",
+    caixa_classe(c, 265, 415, 235, "CabazDTO",
                  ["+ String titulo  (@NotBlank)", "+ String categoria  (@NotBlank)", "+ Double pesoKg  (@Positive)",
                   "+ Double preco  (@PositiveOrZero)", "+ String quiosque  (@NotBlank)",
                   "+ String feirante  (@NotBlank)", "+ Boolean gratuitoOng  (@NotNull)",
                   "+ LocalDate dataPublicacao (@PastOrPresent)", "+ String urlImagem"],
                  [], estereotipo="<<record>>", cor=colors.HexColor("#FFF8E6"))
 
-    # Associacao Cabaz <- CabazDTO e DAO -> Cabaz
     linha(c, [(265, 340), (240, 340)], dash=True, seta=True)
-    linha(c, [(432, 502), (432, 430), (120, 430), (120, 410)], dash=True, seta=True)
+    linha(c, [(437, 547), (437, 442), (120, 442), (120, 415)], dash=True, seta=True)
 
     # Linha inferior: Camada de Excecoes
-    caixa_classe(c, 0, 178, 240, "GlobalExceptionHandler",
+    caixa_classe(c, 0, 185, 240, "GlobalExceptionHandler",
                  [],
                  ["+ tratarNaoEncontrado (404)", "+ tratarRegraNegocio (422)", "+ tratarValidacao (400)",
                   "+ tratarJsonInvalido (400)", "+ tratarTipoInvalido (400)", "+ tratarMetodoNaoSuportado (405)",
-                  "+ tratarIntegridade (409)", "+ tratarErroGenerico (500)"],
+                  "+ tratarIntegridade (409)", "+ tratarErroGenerico (500)", "- montarResposta(...)"],
                  estereotipo="<<@RestControllerAdvice>>", cor=colors.HexColor("#FFF0F8"))
 
-    caixa_classe(c, 265, 178, 235, "Excecoes de Dominio",
-                 ["RecursoNaoEncontradoException (404)", "RegraNegocioException (422)"],
-                 [], estereotipo="<<RuntimeException>>", cor=colors.HexColor("#F0F4FF"))
+    caixa_classe(c, 265, 185, 235, "Excecoes de Dominio",
+                 ["RecursoNaoEncontradoException(String)  -> 404", "RegraNegocioException(String)  -> 422"],
+                 [], estereotipo="<<extends RuntimeException>>", cor=colors.HexColor("#F0F4FF"))
 
-    caixa_classe(c, 265, 112, 235, "ErroResponse",
+    caixa_classe(c, 265, 118, 235, "ErroResponse",
                  ["+ LocalDateTime timestamp", "+ int status", "+ String erro", "+ String mensagem",
                   "+ String path", "+ List<String> detalhes"],
                  [], estereotipo="<<record>>", cor=colors.HexColor("#EEF7F1"))
 
-    linha(c, [(240, 150), (265, 150)], dash=True, seta=True)
-    linha(c, [(240, 76), (265, 76)], dash=True, seta=True)
-
+    linha(c, [(240, 160), (265, 160)], dash=True, seta=True)
+    linha(c, [(240, 80), (265, 80)], dash=True, seta=True)
 
 def diagrama_der(c):
     # Tabela fisica Oracle DDDJ_CABAZES em detalhe
@@ -607,7 +606,7 @@ def construir():
     s.append(P("5. Diagrama de Classes", h1))
     s.append(P("Diagrama completo refletindo fielmente as classes Java do pacote %s (Controller, BO, DAO, Entity, "
                "DTO e Exception)." % C("br.com.fiap")))
-    s.append(Desenho(500, 595, diagrama_classes, 0.94))
+    s.append(Desenho(500, 640, diagrama_classes, 0.93))
     s.append(P("Figura 1 - Diagrama de classes do projeto NutriMatch (CitizenTech).", cap))
     s.append(PageBreak())
 
